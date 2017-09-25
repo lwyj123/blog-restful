@@ -8,4 +8,12 @@ var	router = express.Router();
 
 router.post('/token', oauth2.token);
 
+// github
+router.get('/github', passport.authenticate("github", {scope: "email"}));
+router.get('/github/callback', 
+    passport.authenticate("github", {
+        successRedirect: '/github',
+        failureRedirect: '/'
+    }))
+
 module.exports = router;

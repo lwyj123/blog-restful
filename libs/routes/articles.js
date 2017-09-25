@@ -8,7 +8,7 @@ var log = require(libs + 'log')(module);
 var db = require(libs + 'db/mongoose');
 var Article = require(libs + 'model/article');
 
-router.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.get('/', function(req, res) {
 	
 	Article.find(function (err, articles) {
 		if (!err) {
@@ -60,7 +60,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 	});
 });
 
-router.get('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.get('/:id', function(req, res) {
 	
 	Article.findById(req.params.id, function (err, article) {
 		

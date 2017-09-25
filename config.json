@@ -3,6 +3,11 @@
     "security": {
         "tokenLife" : 3600
     },
+    "githubOAuth": {
+        "clientID": "81e22d6ae69d39c88175",
+        "clientSecret": "e1c68e2c5282a43d62bb3e5016d11265ae02d0f2",
+        "callbackURL": "http://lwio.me"
+    },
     "mongoose": {
         "uri": "mongodb://localhost/apiDB"
     },
