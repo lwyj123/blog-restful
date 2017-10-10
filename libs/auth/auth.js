@@ -1,5 +1,6 @@
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
+var GithubStrategy = require('passport-github').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 
@@ -31,14 +32,6 @@ passport.use(new BasicStrategy(
         });
     }
 ));
-
-passport.use(new GithubStrategy({
-    clientID: config.get('githubOAuth:clientID'),
-    clientSecret: config.get('githubOAuth:clientSecret'),
-    callbackURL: config.get('githubOAuth:callbackURL'),
-}, function(accessToken, refreshToken, profile, done) {
-    done(null, profile)
-}));
 
 passport.use(new ClientPasswordStrategy(
     function(clientId, clientSecret, done) {

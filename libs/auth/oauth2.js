@@ -53,7 +53,7 @@ var generateTokens = function (data, done) {
     		return done(err); 
     	}
     	done(null, tokenValue, refreshTokenValue, { 
-    		'expires_in': config.get('security:tokenLife') 
+    		'expires_in': config.get('security:tokenLife')
     	});
     });
 };
