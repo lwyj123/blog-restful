@@ -10,6 +10,7 @@ var log = require(libs + 'log')(module);
 var config = require(libs + 'config');
 
 var db = require(libs + 'db/mongoose');
+var mongoose = require('mongoose');
 var User = require(libs + 'model/user');
 
 router.get('/github',function(req, res) {
@@ -33,18 +34,21 @@ router.get('/github',function(req, res) {
     }).then(function(response) {
       let githubObj = response.data;
       log.info('githubObj Id: ', githubObj.id);
-      // 
-      User.find({ githubId: githubObj.id }, function (err, user) {
+      log.info('githubObj nickname: ', githubObj.name);
+      log.info('githubObj avatar_url: ', githubObj.avatar_url);
+      
+      User.findOne({ githubId: githubObj.id }, function (err, user) {
         if(!user) {
-          let user = new User({
-            githubId: githubObj.id,
+          let newuser = new User({
+            _id: new mongoose.Types.ObjectId,
+            githubId: parseInt(githubObj.id),
             nickname: githubObj.name + '_github',
             avatar_url: githubObj.avatar_url,
           });
-          user.save(function (err) {
-            log.info(user)
+          newuser.save(function (err, user) {
+            log.info(newuser)
             if (!err) {
-              log.info("New user created with id: %s", user.userId);
+              log.info("New user created with id: %s", user._id);
               return res.json({ 
                 status: 'OK', 
                 user: user 
@@ -67,10 +71,9 @@ router.get('/github',function(req, res) {
             }
           })
         } else {
-          log.info(user)
           if (!err) {
             return res.json({ 
-              status: 'OK', 
+              status: 'OK2', 
               user: user,
             });
           } else {

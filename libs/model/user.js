@@ -4,8 +4,11 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
 
   User = new Schema({
+    _id: {
+      type: Schema.Types.ObjectId,
+    },
     githubId: {
-      type: Number,
+      type: String,
       unique: true
     },
     nickname: {
@@ -22,11 +25,6 @@ var mongoose = require('mongoose'),
   return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
     //more secure - return crypto.pbkdf2Sync(password, this.salt, 10000, 512).toString('hex');
 };*/
-
-User.virtual('userId')
-.get(function () {
-  return this._id;
-});
 
 /*User.virtual('password')
   .set(function(password) {
