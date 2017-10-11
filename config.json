@@ -11,6 +11,9 @@
     "mongoose": {
         "uri": "mongodb://localhost/apiDB"
     },
+    "jwt": {
+        "secret": "LWio"
+    },
     "default": {
         "api": {
             "version" : "v1"

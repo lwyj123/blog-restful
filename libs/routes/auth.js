@@ -13,6 +13,8 @@ var db = require(libs + 'db/mongoose');
 var mongoose = require('mongoose');
 var User = require(libs + 'model/user');
 
+var jwt = require('jsonwebtoken');
+
 router.get('/github',function(req, res) {
   let code = req.query.code;
   log.info(code);
@@ -46,12 +48,14 @@ router.get('/github',function(req, res) {
             avatar_url: githubObj.avatar_url,
           });
           newuser.save(function (err, user) {
-            log.info(newuser)
             if (!err) {
               log.info("New user created with id: %s", user._id);
+              let token = jwt.sign({nickname: user.nickname}, config.get('jwt:secret'), {
+                expiresIn : "2 days" // expires in 24 hours
+              });
               return res.json({ 
                 status: 'OK', 
-                user: user 
+                token: token 
               });
             } else {
               if(err.name === 'ValidationError') {
@@ -72,9 +76,13 @@ router.get('/github',function(req, res) {
           })
         } else {
           if (!err) {
+            let token = jwt.sign({nickname: user.nickname}, config.get('jwt:secret'), {
+              expiresIn : "2 days" // expires in 24 hours
+            });
+            log.info(token);
             return res.json({ 
-              status: 'OK2', 
-              user: user,
+              status: 'OK', 
+              token: token,
             });
           } else {
             res.statusCode = 500;
