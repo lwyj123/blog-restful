@@ -26,13 +26,13 @@ router.get('/github',function(req, res) {
       }
     })
     .then(function(response) {
+      log.info(response.data)
       let obj = querystring.parse(response.data);
       log.info(obj.access_token)
       if(obj.error) {
         throw new Error('Get github access token fail.');
       }
-      let access_token = obj.access_token;
-      return axios.get('https://api.github.com/user?access_token=' + access_token)
+      return axios.get('https://api.github.com/user?access_token=' + obj.access_token)
     }).then(function(response) {
       let githubObj = response.data;
       log.info('githubObj Id: ', githubObj.id);

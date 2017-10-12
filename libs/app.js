@@ -26,6 +26,12 @@ app.use(cookieParser());
 app.use(methodOverride());
 app.use(passport.initialize());
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use('/', api);
 app.use('/api', api);
 app.use('/api/users', users);
@@ -53,6 +59,11 @@ app.use(function(err, req, res, next){
     	error: err.message 
     });
     return;
+});
+
+process.on('unhandledRejection', (reason, p) => {
+    console.log("Unhandled Rejection at: Promise ", p, " reason: ", reason);
+    // application specific logging, throwing an error, or other logic here
 });
 
 module.exports = app;
