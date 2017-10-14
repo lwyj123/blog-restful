@@ -25,13 +25,19 @@ router.get('/', function(req, res) {
 	});
 });
 
-router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-	
+router.post('/', function(req, res) {
+	if(!req.decoded) {
+		res.statusCode = 403;
+		return res.json({
+			status: 'ERR',
+			error: 'Unauthorized or request without token'
+		})
+	}
+
 	var article = new Article({
 		title: req.body.title,
-		author: req.body.author,
-		description: req.body.description,
-		images: req.body.images
+		author_id: req.decoded.githubId,
+		content_html: req.body.content,
 	});
 
 	article.save(function (err) {
@@ -89,7 +95,7 @@ router.get('/:id', function(req, res) {
 });
 
 router.put('/:id', passport.authenticate('bearer', { session: false }), function (req, res){
-	var articleId = req.params.id;
+	/*var articleId = req.params.id;
 
 	Article.findById(articleId, function (err, article) {
 		if(!article) {
@@ -128,7 +134,7 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 				log.error('Internal error (%d): %s', res.statusCode, err.message);
 			}
 		});
-	});
+	});*/
 });
 
 module.exports = router;

@@ -76,7 +76,7 @@ router.get('/github',function(req, res) {
           })
         } else {
           if (!err) {
-            let token = jwt.sign({nickname: user.nickname}, config.get('jwt:secret'), {
+            let token = jwt.sign({nickname: user.nickname, githubId: user.githubId}, config.get('jwt:secret'), {
               expiresIn : "2 days" // expires in 24 hours
             });
             log.info(token);
